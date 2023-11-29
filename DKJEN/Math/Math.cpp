@@ -532,14 +532,14 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
 			n = { from.z,0,-from.x };
 		}
 	}
+
 	//内積で求めてね
 	float cos = Dot(normalizeFrom, normalizeTo);
 
 	//外積で求めてね
 	float sin = Length(Cross(normalizeFrom, normalizeTo));
 
-	//形自体は前回とほぼ同じ
-	//見比べてみよう！
+	
 	Matrix4x4 resultR = {};
 	resultR.m[0][0] = n.x * n.x * (1 - cos) + cos;
 	resultR.m[0][1] = n.x * n.y * (1 - cos) + n.z*sin;
