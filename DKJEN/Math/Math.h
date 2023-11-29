@@ -100,5 +100,9 @@ Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float botto
 float Length(const Vector3& v);
 Vector3 Normalize(const Vector3& v);
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
+Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
+float Dot(const Vector3& v1, const Vector3& v2);
+Vector3 DotVector3(const Vector3& v1, const Vector3& v2);
+Vector3 Cross(const Vector3 v1, const Vector3 v2);
 
 

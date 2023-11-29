@@ -490,3 +490,76 @@ Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle)
 	result.m[2][2] = (axis.z * axis.z) * (1 - cosAngle) + cosAngle;
 	return result;
 }
+
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float result{};
+	result = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return result;
+}
+
+Vector3 DotVector3(const Vector3& v1, const Vector3& v2) {
+	Vector3 result{};
+	result.x = v1.x * v2.x;
+	result.y = v1.y * v2.y;
+	result.z = v1.z * v2.z;
+
+	return result;
+}
+Vector3 Cross(const Vector3 v1, const Vector3 v2) {
+	Vector3 result;
+	result.x = v1.y * v2.z - v1.z * v2.y;
+	result.y = v1.z * v2.x - v1.x * v2.z;
+	result.z = v1.x * v2.y - v1.y * v2.x;
+
+	return result;
+}
+Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
+
+	Vector3 normalizeFrom = from;
+	Vector3 normalizeTo = to;
+
+
+	Vector3 uvCross = Cross(normalizeFrom, normalizeTo);
+	Vector3 n = Normalize(uvCross);
+	 
+	if (from.x==-to.x|| from.y == -to.y|| from.z == -to.z) {
+		if (from.x!=0||from.y!=0) {
+			n = { from.y,-from.x,0 };
+		}
+		else if(from.x != 0 || from.z != 0)
+		{
+			n = { from.z,0,-from.x };
+		}
+	}
+	//内積で求めてね
+	float cos = Dot(normalizeFrom, normalizeTo);
+
+	//外積で求めてね
+	float sin = Length(Cross(normalizeFrom, normalizeTo));
+
+	//形自体は前回とほぼ同じ
+	//見比べてみよう！
+	Matrix4x4 resultR = {};
+	resultR.m[0][0] = n.x * n.x * (1 - cos) + cos;
+	resultR.m[0][1] = n.x * n.y * (1 - cos) + n.z*sin;
+	resultR.m[0][2] = n.x *n.z * (1 - cos) - n.y*sin;
+	resultR.m[0][3] = 0.0f;
+
+	resultR.m[1][0] = n.y *n.x * (1 - cos) - n.z*sin;
+	resultR.m[1][1] = n.y *n.y * (1 - cos) + cos;
+	resultR.m[1][2] = n.y * n.z * (1 - cos) + n.x*sin;
+	resultR.m[1][3] = 0.0f;
+
+	resultR.m[2][0] = n.z *n.x * (1 - cos) + n.y*sin;
+	resultR.m[2][1] = n.z *n.y * (1 - cos) - n.x*sin;
+	resultR.m[2][2] = n.z *n.z * (1 - cos) + cos;
+	resultR.m[2][3] = 0.0f;
+
+	resultR.m[3][0] = 0.0f;
+	resultR.m[3][1] = 0.0f;
+	resultR.m[3][2] = 0.0f;
+	resultR.m[3][3] = 1.0f;
+
+	return resultR;
+}
