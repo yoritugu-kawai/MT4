@@ -79,7 +79,12 @@ struct ImGguiTransfrom
 	Vector3 translate;
 	Vector4 color;
 };
-
+struct Quaternion {
+	float x;
+	float y;
+	float z;
+	float w;
+};
 /// <summary>
 /// 数学
 /// </summary>
@@ -106,3 +111,17 @@ Vector3 DotVector3(const Vector3& v1, const Vector3& v2);
 Vector3 Cross(const Vector3 v1, const Vector3 v2);
 
 
+
+
+Quaternion MultiplyQuaternion(const Quaternion& lhs, const Quaternion& rhs);
+
+Quaternion IdentityQuaternion();
+
+Quaternion Conjugate(const Quaternion& quaternion);
+
+
+float Norm(const Quaternion& quaternion);
+
+Quaternion NormalizeQuaternion(const Quaternion& quaternion);
+
+Quaternion InverseQuaternion(const Quaternion& quaternion);

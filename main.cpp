@@ -52,44 +52,77 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//　ゲーム処理
 		//////
-
-		Vector3 from0 = Normalize(Vector3{ 1.0f,0.7f,0.5f });
-		Vector3 to0;
-		to0.x= -from0.x;
-		to0.y = -from0.y;
-		to0.z = -from0.z;
-
-		Vector3 from1 = Normalize(Vector3{ -0.6f,0.9f,0.2f });
-		Vector3 to1 = Normalize(Vector3{ 0.4f,0.7f,-0.5f });
+		Quaternion q1 = { 2.0f,3.0f,4.0f,1.0f };
+		Quaternion q2 = { 1.0f,3.0f,5.0f,2.0f };
+		Quaternion indentity = IdentityQuaternion();
+		Quaternion conj = Conjugate(q1);
+		Quaternion inv = InverseQuaternion(q1);
+		Quaternion normal = NormalizeQuaternion(q1);
+		Quaternion mul1 = MultiplyQuaternion(q1, q2);
+		Quaternion mul2 = MultiplyQuaternion(q2, q1);
+		float norm = Norm(q1);
 		
-		Matrix4x4 rotateMatrix0 = DirectionToDirection(
-			Normalize(Vector3{ 1.0f,0.0f,0.0f }), Normalize(Vector3{ -1.0f,0.0f,0.0f })
-		);
-		Matrix4x4 rotateMatrix1 = DirectionToDirection(from0, to0);
-		Matrix4x4 rotateMatrix2 = DirectionToDirection(from1, to1);
-		ImGui::Begin("rotateMatrix0");
-		for (int i = 0; i < 4; i++) {
-			for (int t = 0; t < 4; t++) {
-				ImGui::Text("%.3f", rotateMatrix0.m[i][t]);
-			}
-		}
+		ImGui::Begin("indentity");
+		
+		ImGui::Text("%.2f", indentity.x);
+		ImGui::Text("%.2f", indentity.y);
+		ImGui::Text("%.2f", indentity.z);
+		ImGui::Text("%.2f", indentity.w);
+
 		ImGui::End();
 
-		ImGui::Begin("rotateMatrix1");
-		for (int i = 0; i < 4; i++) {
-			for (int t = 0; t < 4; t++) {
-				ImGui::Text("%.3f", rotateMatrix1.m[i][t]);
-			}
-		}
-		
+		ImGui::Begin("Conjugate");
+
+		ImGui::Text("%.2f", conj.x);
+		ImGui::Text("%.2f", conj.y);
+		ImGui::Text("%.2f", conj.z);
+		ImGui::Text("%.2f", conj.w);
+
 		ImGui::End();
 
-		ImGui::Begin("rotateMatrix2");
-		for (int i = 0; i < 4; i++) {
-			for (int t = 0; t < 4; t++) {
-				ImGui::Text("%.3f", rotateMatrix2.m[i][t]);
-			}
-		}
+		ImGui::Begin("Inverse");
+
+		ImGui::Text("%.2f", inv.x);
+		ImGui::Text("%.2f", inv.y);
+		ImGui::Text("%.2f", inv.z);
+		ImGui::Text("%.2f", inv.w);
+
+		ImGui::End();
+
+		ImGui::Begin("Normalize");
+
+		ImGui::Text("%.2f", normal.x);
+		ImGui::Text("%.2f", normal.y);
+		ImGui::Text("%.2f", normal.z);
+		ImGui::Text("%.2f", normal.w);
+
+		ImGui::End();
+
+
+		ImGui::Begin("MultiplyQuaternion(q1, q2)");
+
+		ImGui::Text("%.2f", mul1.x);
+		ImGui::Text("%.2f", mul1.y);
+		ImGui::Text("%.2f", mul1.z);
+		ImGui::Text("%.2f", mul1.w);
+
+		ImGui::End();
+
+
+		ImGui::Begin("MultiplyQuaternion(q2, q1)");
+
+		ImGui::Text("%.2f", mul2.x);
+		ImGui::Text("%.2f", mul2.y);
+		ImGui::Text("%.2f", mul2.z);
+		ImGui::Text("%.2f", mul2.w);
+
+		ImGui::End();
+
+
+		ImGui::Begin("Norm");
+
+		ImGui::Text("%.2f", norm);
+	
 
 		ImGui::End();
 		// 
