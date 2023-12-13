@@ -52,79 +52,53 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//　ゲーム処理
 		//////
-		Quaternion q1 = { 2.0f,3.0f,4.0f,1.0f };
-		Quaternion q2 = { 1.0f,3.0f,5.0f,2.0f };
-		Quaternion indentity = IdentityQuaternion();
-		Quaternion conj = Conjugate(q1);
-		Quaternion inv = InverseQuaternion(q1);
-		Quaternion normal = NormalizeQuaternion(q1);
-		Quaternion mul1 = MultiplyQuaternion(q1, q2);
-		Quaternion mul2 = MultiplyQuaternion(q2, q1);
-		float norm = Norm(q1);
+		Quaternion rotation = MakeRotateAxisAngleQuaternion(Normalize(Vector3{ 1.0f,0.4f,-0.2f }), 0.45f);
+		Vector3 pointY = { 2.1f,-0.9f,1.3f };
+		Matrix4x4 rotateMatrix = MakeRotateMatrix(rotation);
+		Vector3 rotateByQuaterion = RotateVector(pointY, rotation);
+		Vector3 rotateByMatrix = TransformRot(pointY, rotateMatrix);
+
+		ImGui::Begin("rotation");
 		
-		ImGui::Begin("indentity");
-		
-		ImGui::Text("%.2f", indentity.x);
-		ImGui::Text("%.2f", indentity.y);
-		ImGui::Text("%.2f", indentity.z);
-		ImGui::Text("%.2f", indentity.w);
-
-		ImGui::End();
-
-		ImGui::Begin("Conjugate");
-
-		ImGui::Text("%.2f", conj.x);
-		ImGui::Text("%.2f", conj.y);
-		ImGui::Text("%.2f", conj.z);
-		ImGui::Text("%.2f", conj.w);
-
-		ImGui::End();
-
-		ImGui::Begin("Inverse");
-
-		ImGui::Text("%.2f", inv.x);
-		ImGui::Text("%.2f", inv.y);
-		ImGui::Text("%.2f", inv.z);
-		ImGui::Text("%.2f", inv.w);
-
-		ImGui::End();
-
-		ImGui::Begin("Normalize");
-
-		ImGui::Text("%.2f", normal.x);
-		ImGui::Text("%.2f", normal.y);
-		ImGui::Text("%.2f", normal.z);
-		ImGui::Text("%.2f", normal.w);
+		ImGui::Text("%.3f", rotation.x);
+		ImGui::Text("%.3f", rotation.y);
+		ImGui::Text("%.3f", rotation.z);
+		ImGui::Text("%.3f", rotation.w);
 
 		ImGui::End();
 
 
-		ImGui::Begin("MultiplyQuaternion(q1, q2)");
-
-		ImGui::Text("%.2f", mul1.x);
-		ImGui::Text("%.2f", mul1.y);
-		ImGui::Text("%.2f", mul1.z);
-		ImGui::Text("%.2f", mul1.w);
-
-		ImGui::End();
-
-
-		ImGui::Begin("MultiplyQuaternion(q2, q1)");
-
-		ImGui::Text("%.2f", mul2.x);
-		ImGui::Text("%.2f", mul2.y);
-		ImGui::Text("%.2f", mul2.z);
-		ImGui::Text("%.2f", mul2.w);
-
-		ImGui::End();
-
-
-		ImGui::Begin("Norm");
-
-		ImGui::Text("%.2f", norm);
+		ImGui::Begin("rotateMatrix");
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				ImGui::Text("%4.2f", rotateMatrix.m[i][j]);
+			}
+		}
 	
 
 		ImGui::End();
+
+
+
+
+		ImGui::Begin("rotateByQuaterion");
+
+		ImGui::Text("%.3f", rotateByQuaterion.x);
+		ImGui::Text("%.3f", rotateByQuaterion.y);
+		ImGui::Text("%.3f", rotateByQuaterion.z);
+
+		ImGui::End();
+
+		ImGui::Begin("rotateByMatrix");
+
+		ImGui::Text("%.3f", rotateByMatrix.x);
+		ImGui::Text("%.3f", rotateByMatrix.y);
+		ImGui::Text("%.3f", rotateByMatrix.z);
+
+		ImGui::End();
+
 		// 
 		//////
 		//　ゲーム処理

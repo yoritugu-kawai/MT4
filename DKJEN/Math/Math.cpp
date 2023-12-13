@@ -97,7 +97,30 @@ Matrix4x4 MakeRotateYMatrix(float radian)
 	return result;
 
 }
+Vector3 TransformRot(const Vector3& vector, const Matrix4x4& matrix) {
+	Vector3 result;
 
+	result.x = (vector.x * matrix.m[0][0]) + (vector.y * matrix.m[1][0])
+		+ (vector.z * matrix.m[2][0]) + (1.0f * matrix.m[3][0]);
+
+	result.y = (vector.x * matrix.m[0][1]) + (vector.y * matrix.m[1][1])
+		+ (vector.z * matrix.m[2][1]) + (1.0f * matrix.m[3][1]);
+
+	result.z = (vector.x * matrix.m[0][2]) + (vector.y * matrix.m[1][2])
+		+ (vector.z * matrix.m[2][2]) + (1.0f * matrix.m[3][2]);
+
+	float w = (vector.x * matrix.m[0][3]) + (vector.y * matrix.m[1][3]) + (vector.z * matrix.m[2][3]) + (1.0f * matrix.m[3][3]);
+
+
+	assert(w != 0.0f);
+	result.x /= w;
+	result.y /= w;
+	result.z /= w;
+
+	return result;
+
+
+}
 Matrix4x4 MakeRotateZMatrix(float radian)
 {
 	Matrix4x4 result{};
@@ -522,12 +545,12 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
 
 	Vector3 uvCross = Cross(normalizeFrom, normalizeTo);
 	Vector3 n = Normalize(uvCross);
-	 
-	if (from.x==-to.x|| from.y == -to.y|| from.z == -to.z) {
-		if (from.x!=0||from.y!=0) {
+
+	if (from.x == -to.x || from.y == -to.y || from.z == -to.z) {
+		if (from.x != 0 || from.y != 0) {
 			n = { from.y,-from.x,0 };
 		}
-		else if(from.x != 0 || from.z != 0)
+		else if (from.x != 0 || from.z != 0)
 		{
 			n = { from.z,0,-from.x };
 		}
@@ -539,21 +562,21 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
 	//外積で求めてね
 	float sin = Length(Cross(normalizeFrom, normalizeTo));
 
-	
+
 	Matrix4x4 resultR = {};
 	resultR.m[0][0] = n.x * n.x * (1 - cos) + cos;
-	resultR.m[0][1] = n.x * n.y * (1 - cos) + n.z*sin;
-	resultR.m[0][2] = n.x *n.z * (1 - cos) - n.y*sin;
+	resultR.m[0][1] = n.x * n.y * (1 - cos) + n.z * sin;
+	resultR.m[0][2] = n.x * n.z * (1 - cos) - n.y * sin;
 	resultR.m[0][3] = 0.0f;
 
-	resultR.m[1][0] = n.y *n.x * (1 - cos) - n.z*sin;
-	resultR.m[1][1] = n.y *n.y * (1 - cos) + cos;
-	resultR.m[1][2] = n.y * n.z * (1 - cos) + n.x*sin;
+	resultR.m[1][0] = n.y * n.x * (1 - cos) - n.z * sin;
+	resultR.m[1][1] = n.y * n.y * (1 - cos) + cos;
+	resultR.m[1][2] = n.y * n.z * (1 - cos) + n.x * sin;
 	resultR.m[1][3] = 0.0f;
 
-	resultR.m[2][0] = n.z *n.x * (1 - cos) + n.y*sin;
-	resultR.m[2][1] = n.z *n.y * (1 - cos) - n.x*sin;
-	resultR.m[2][2] = n.z *n.z * (1 - cos) + cos;
+	resultR.m[2][0] = n.z * n.x * (1 - cos) + n.y * sin;
+	resultR.m[2][1] = n.z * n.y * (1 - cos) - n.x * sin;
+	resultR.m[2][2] = n.z * n.z * (1 - cos) + cos;
 	resultR.m[2][3] = 0.0f;
 
 	resultR.m[3][0] = 0.0f;
@@ -584,7 +607,7 @@ Quaternion MultiplyQuaternion(const Quaternion& lhs, const Quaternion& rhs) {
 
 Quaternion IdentityQuaternion() {
 
-	
+
 	Quaternion result = {};
 
 	result.w = 1.0f;
@@ -601,7 +624,7 @@ Quaternion IdentityQuaternion() {
 
 Quaternion Conjugate(const Quaternion& quaternion) {
 
-	
+
 	Quaternion result = {};
 	result.x = -quaternion.x;
 	result.y = -quaternion.y;
@@ -660,7 +683,7 @@ Quaternion NormalizeQuaternion(const Quaternion& quaternion) {
 }
 
 Quaternion InverseQuaternion(const Quaternion& quaternion) {
-	
+
 
 
 	Quaternion result = {};
@@ -676,6 +699,69 @@ Quaternion InverseQuaternion(const Quaternion& quaternion) {
 	result.z = conjugate.z / t;
 	result.w = conjugate.w / t;
 
+
+	return result;
+}
+
+Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle)
+{
+	Quaternion result;
+	result = IdentityQuaternion();
+
+	float halfAngle = angle / 2;
+
+	result.x = axis.x * sinf(halfAngle);
+	result.y = axis.y * sinf(halfAngle);
+	result.z = axis.z * sinf(halfAngle);
+	result.w = cosf(halfAngle);
+
+	return result;
+}
+
+Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion)
+{
+	Vector3 result;
+
+	Quaternion fromVector;
+	fromVector.x = vector.x;
+	fromVector.y = vector.y;
+	fromVector.z = vector.z;
+	fromVector.w = 0.0f;
+
+	Quaternion conj = Conjugate(quaternion);
+
+	Quaternion rot;
+	rot = MultiplyQuaternion(quaternion, MultiplyQuaternion(fromVector, conj));
+
+	result.x = rot.x;
+	result.y = rot.y;
+	result.z = rot.z;
+
+	return result;
+}
+
+Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion)
+{
+	Matrix4x4 result;
+	result.m[0][0] = (quaternion.w * quaternion.w) + (quaternion.x * quaternion.x) - (quaternion.y * quaternion.y) - (quaternion.z * quaternion.z);
+	result.m[0][1] = 2.0f * ((quaternion.x * quaternion.y) + (quaternion.w * quaternion.z));
+	result.m[0][2] = 2.0f * ((quaternion.x * quaternion.z) - (quaternion.w * quaternion.y));
+	result.m[0][3] = 0.0f;
+
+	result.m[1][0] = 2.0f * ((quaternion.x * quaternion.y) - (quaternion.w * quaternion.z));
+	result.m[1][1] = (quaternion.w * quaternion.w) - (quaternion.x * quaternion.x) + (quaternion.y * quaternion.y) - (quaternion.z * quaternion.z);
+	result.m[1][2] = 2.0f * ((quaternion.y * quaternion.z) + (quaternion.w * quaternion.x));
+	result.m[1][3] = 0.0f;
+
+	result.m[2][0] = 2.0f * ((quaternion.x * quaternion.z) + (quaternion.w * quaternion.y));
+	result.m[2][1] = 2.0f * ((quaternion.y * quaternion.z) - (quaternion.w * quaternion.x));
+	result.m[2][2] = (quaternion.w * quaternion.w) - (quaternion.x * quaternion.x) - (quaternion.y * quaternion.y) + (quaternion.z * quaternion.z);
+	result.m[2][3] = 0.0f;
+
+	result.m[3][0] = 0.0f;
+	result.m[3][1] = 0.0f;
+	result.m[3][2] = 0.0f;
+	result.m[3][3] = 1.0f;
 
 	return result;
 }
