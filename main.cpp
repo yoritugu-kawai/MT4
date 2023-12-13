@@ -60,10 +60,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		ImGui::Begin("rotation");
 		
-		ImGui::Text("%.3f", rotation.x);
-		ImGui::Text("%.3f", rotation.y);
-		ImGui::Text("%.3f", rotation.z);
-		ImGui::Text("%.3f", rotation.w);
+		ImGui::Text("%4.2f", rotation.x);
+		ImGui::Text("%4.2f", rotation.y);
+		ImGui::Text("%4.2f", rotation.z);
+		ImGui::Text("%4.2f", rotation.w);
 
 		ImGui::End();
 
@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				ImGui::Text("%4.2f", rotateMatrix.m[i][j]);
+				ImGui::Text("%4.3f", rotateMatrix.m[i][j]);
 			}
 		}
 	
@@ -85,17 +85,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		ImGui::Begin("rotateByQuaterion");
 
-		ImGui::Text("%.3f", rotateByQuaterion.x);
-		ImGui::Text("%.3f", rotateByQuaterion.y);
-		ImGui::Text("%.3f", rotateByQuaterion.z);
+		ImGui::Text("%4.2f", rotateByQuaterion.x);
+		ImGui::Text("%4.2f", rotateByQuaterion.y);
+		ImGui::Text("%4.2f", rotateByQuaterion.z);
 
 		ImGui::End();
 
 		ImGui::Begin("rotateByMatrix");
 
-		ImGui::Text("%.3f", rotateByMatrix.x);
-		ImGui::Text("%.3f", rotateByMatrix.y);
-		ImGui::Text("%.3f", rotateByMatrix.z);
+		ImGui::Text("%4.2f", rotateByMatrix.x);
+		ImGui::Text("%4.2f", rotateByMatrix.y);
+		ImGui::Text("%4.2f", rotateByMatrix.z);
 
 		ImGui::End();
 
