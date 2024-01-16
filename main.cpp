@@ -52,8 +52,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//　ゲーム処理
 		//////
-		Quaternion rotaion0 = MakeRotateAxisAngleQuaternion({0.71f,0.71f,0.0f},0.3f);
-		Quaternion rotaion1 = MakeRotateAxisAngleQuaternion({0.71f,0.0f,0.71f},0.3141592f);
+		Quaternion rotaion0 = MakeRotateAxisAngleQuaternion(Normalize({0.71f,0.71f,0.0f}),0.3f);
+		Quaternion rotaion1 = MakeRotateAxisAngleQuaternion(Normalize({0.71f,0.0f,0.71f}),3.141592f);
+
 
 		Quaternion interpolate0 = Slerp(rotaion0, rotaion1, 0.0f);
 		Quaternion interpolate1 = Slerp(rotaion0, rotaion1, 0.3f);
@@ -61,6 +62,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Quaternion interpolate3 = Slerp(rotaion0, rotaion1, 0.7f);
 		Quaternion interpolate4 = Slerp(rotaion0, rotaion1, 1.0f);
 
+	
 		ImGui::Begin("interpolate0");
 		
 		ImGui::Text("%4.2f", interpolate0.x);
@@ -106,8 +108,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		ImGui::Text("%4.2f", interpolate4.z);
 		ImGui::Text("%4.2f", interpolate4.w);
 		ImGui::Text("Slerp(rotaion0, rotaion1, 1.0f)");
-
 		ImGui::End();
+
+		/*ImGui::Begin("h");*/
+
+		//ImGui::Text("%0.2f %0.2f %0.2f %0.2f", interpolate0.x, interpolate0.y, interpolate0.z, interpolate0.w);
+		//ImGui::Text("%0.2f %0.2f %0.2f %0.2f", interpolate1.x, interpolate1.y, interpolate1.z, interpolate1.w);
+		//ImGui::Text("%0.2f %0.2f %0.2f %0.2f", interpolate2.x, interpolate2.y, interpolate1.z, interpolate1.w);
+		//ImGui::Text("%0.2f %0.2f %0.2f %0.2f", interpolate3.x, interpolate3.y, interpolate3.z, interpolate3.w);
+		//ImGui::Text("%0.2f %0.2f %0.2f %0.2f", interpolate4.x, interpolate4.y, interpolate4.z, interpolate4.w);
+
+
+		//ImGui::End();
 
 		// 
 		//////

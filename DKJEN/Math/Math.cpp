@@ -766,11 +766,16 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion)
 	return result;
 }
 
+float Dot(const Quaternion& q1, const Quaternion& q2)
+{
+	return float(q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z);
+}
+
 Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t)
 {
 
 	// クォータニオンの内積を計算
-	float dot = q1.x* q2.x+ q1.y * q2.y+ q1.z * q2.z+ q1.w * q2.w;
+	float dot = Dot(q1,q2);
 	Quaternion qn1 = q1;//q1のnew
 	Quaternion qn2 = q2;//q2のnew
 	if (dot < 0.0f)
