@@ -52,50 +52,60 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//　ゲーム処理
 		//////
-		Quaternion rotation = MakeRotateAxisAngleQuaternion(Normalize(Vector3{ 1.0f,0.4f,-0.2f }), 0.45f);
-		Vector3 pointY = { 2.1f,-0.9f,1.3f };
-		Matrix4x4 rotateMatrix = MakeRotateMatrix(rotation);
-		Vector3 rotateByQuaterion = RotateVector(pointY, rotation);
-		Vector3 rotateByMatrix = TransformRot(pointY, rotateMatrix);
+		Quaternion rotaion0 = MakeRotateAxisAngleQuaternion({0.71f,0.71f,0.0f},0.3f);
+		Quaternion rotaion1 = MakeRotateAxisAngleQuaternion({0.71f,0.0f,0.71f},0.3141592f);
 
-		ImGui::Begin("rotation");
+		Quaternion interpolate0 = Slerp(rotaion0, rotaion1, 0.0f);
+		Quaternion interpolate1 = Slerp(rotaion0, rotaion1, 0.3f);
+		Quaternion interpolate2 = Slerp(rotaion0, rotaion1, 0.5f);
+		Quaternion interpolate3 = Slerp(rotaion0, rotaion1, 0.7f);
+		Quaternion interpolate4 = Slerp(rotaion0, rotaion1, 1.0f);
+
+		ImGui::Begin("interpolate0");
 		
-		ImGui::Text("%4.2f", rotation.x);
-		ImGui::Text("%4.2f", rotation.y);
-		ImGui::Text("%4.2f", rotation.z);
-		ImGui::Text("%4.2f", rotation.w);
+		ImGui::Text("%4.2f", interpolate0.x);
+		ImGui::Text("%4.2f", interpolate0.y);
+		ImGui::Text("%4.2f", interpolate0.z);
+		ImGui::Text("%4.2f", interpolate0.w);
+		ImGui::Text("Slerp(rotaion0, rotaion1, 0.0f)");
 
 		ImGui::End();
 
+		ImGui::Begin("interpolate1");
 
-		ImGui::Begin("rotateMatrix");
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				ImGui::Text("%4.3f", rotateMatrix.m[i][j]);
-			}
-		}
-	
+		ImGui::Text("%4.2f", interpolate1.x);
+		ImGui::Text("%4.2f", interpolate1.y);
+		ImGui::Text("%4.2f", interpolate1.z);
+		ImGui::Text("%4.2f", interpolate1.w);
+		ImGui::Text("Slerp(rotaion0, rotaion1, 0.3f);");
 
 		ImGui::End();
 
+		ImGui::Begin("interpolate2");
 
-
-
-		ImGui::Begin("rotateByQuaterion");
-
-		ImGui::Text("%4.2f", rotateByQuaterion.x);
-		ImGui::Text("%4.2f", rotateByQuaterion.y);
-		ImGui::Text("%4.2f", rotateByQuaterion.z);
+		ImGui::Text("%4.2f", interpolate2.x);
+		ImGui::Text("%4.2f", interpolate2.y);
+		ImGui::Text("%4.2f", interpolate2.z);
+		ImGui::Text("%4.2f", interpolate2.w);
+		ImGui::Text("Slerp(rotaion0, rotaion1, 0.5f)");
 
 		ImGui::End();
+		ImGui::Begin("interpolate3");
+	   
+		ImGui::Text("%4.2f", interpolate3.x);
+		ImGui::Text("%4.2f", interpolate3.y);
+		ImGui::Text("%4.2f", interpolate3.z);
+		ImGui::Text("%4.2f", interpolate3.w);
+		ImGui::Text("Slerp(rotaion0, rotaion1, 0.7f)");
 
-		ImGui::Begin("rotateByMatrix");
+		ImGui::End();
+		ImGui::Begin("interpolate4");
 
-		ImGui::Text("%4.2f", rotateByMatrix.x);
-		ImGui::Text("%4.2f", rotateByMatrix.y);
-		ImGui::Text("%4.2f", rotateByMatrix.z);
+		ImGui::Text("%4.2f", interpolate4.x);
+		ImGui::Text("%4.2f", interpolate4.y);
+		ImGui::Text("%4.2f", interpolate4.z);
+		ImGui::Text("%4.2f", interpolate4.w);
+		ImGui::Text("Slerp(rotaion0, rotaion1, 1.0f)");
 
 		ImGui::End();
 
